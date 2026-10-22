@@ -1,0 +1,32 @@
+import {
+   adminClient,
+   emailOTPClient,
+   twoFactorClient,
+   magicLinkClient,
+   lastLoginMethodClient,
+   anonymousClient,
+} from "better-auth/client/plugins";
+import { createAuthClient } from "better-auth/react";
+import { passkeyClient } from "@better-auth/passkey/client";
+
+export const authClient = createAuthClient({
+   baseURL:
+      typeof window !== "undefined"
+         ? `${window.location.origin}`
+         : process.env.NEXT_PUBLIC_APP_URL
+            ? `${process.env.NEXT_PUBLIC_APP_URL}`
+            : "http://localhost:3000",
+   plugins: [
+      passkeyClient(),
+      emailOTPClient(),
+      magicLinkClient(),
+      lastLoginMethodClient(),
+      anonymousClient(),
+      twoFactorClient({
+         onTwoFactorRedirect: () => {
+            window.location.href = "/2fa";
+         },
+      }),
+      adminClient(),
+   ],
+});
