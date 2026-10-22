@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import ReactLenis from "lenis/react";
 import { Poppins } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const poppins = Poppins({
 	weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -21,7 +22,9 @@ export default function RootLayout({
 			className={cn("antialiased", poppins.className)}>
 			<body>
 				<Toaster />
-				<ReactLenis root>{children}</ReactLenis>
+				<ReactLenis root>
+					<TooltipProvider>{children}</TooltipProvider>
+				</ReactLenis>
 			</body>
 		</html>
 	);
