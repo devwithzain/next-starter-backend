@@ -8,17 +8,25 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import * as React from "react";
+import {
+	IconMail,
+	IconInnerShadowTop,
+	IconCirclePlusFilled,
+} from "@tabler/icons-react";
+import Link from "next/link";
 import { sidebarData } from "@/constants";
-import { CommandIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
-import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
-import { NavDocuments } from "@/components/nav-documents";
-import { NavSecondary } from "@/components/nav-secondary";
+import { NavMain } from "@/components/nav-main";
+import { Button } from "@/components/ui/button";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	const { data: session } = authClient.useSession();
+	const role = session?.user?.role || "user";
+
+	const navItems =
+		role === "admin" ? sidebarData.adminNav : sidebarData.userNav;
+
 	return (
 		<Sidebar
 			collapsible="offcanvas"
@@ -26,25 +34,42 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			<SidebarHeader>
 				<SidebarMenu>
 					<SidebarMenuItem>
-						<SidebarMenuButton
-							className="data-[slot=sidebar-menu-button]:p-1.5!"
-							render={<a href="#" />}>
-							<CommandIcon className="size-5!" />
-							<span className="text-base font-semibold">Dashboard</span>
+						<SidebarMenuButton className="data-[slot=sidebar-menu-button]:p-1.5!">
+							<Link
+								href="/dashboard"
+								className="flex items-center gap-2">
+								<IconInnerShadowTop className="size-5!" />
+								<span className="text-base font-semibold">Dashboard</span>
+							</Link>
 						</SidebarMenuButton>
+					</SidebarMenuItem>
+					<SidebarMenuItem className="flex items-center gap-2">
+						<div className="flex-1">
+							<SidebarMenuButton
+								tooltip="Admin Dashboard"
+								className="w-full bg-black text-white dark:bg-white dark:text-black duration-200 ease-linear hover:bg-black/90 active:bg-black/90">
+								<IconCirclePlusFilled />
+								<span>Admin Dashboard</span>
+							</SidebarMenuButton>
+						</div>
+						<Link href="/dashboard/inquiries">
+							<Button
+								size="icon"
+								className="size-8 group-data-[collapsible=icon]:opacity-0"
+								variant="outline"
+								title="Inquiries">
+								<IconMail />
+								<span className="sr-only">Inquiries</span>
+							</Button>
+						</Link>
 					</SidebarMenuItem>
 				</SidebarMenu>
 			</SidebarHeader>
 			<SidebarContent>
-				<NavMain items={sidebarData.navMain} />
-				<NavDocuments items={sidebarData.quickLinks} />
-				<NavSecondary
-					items={sidebarData.navSecondary}
-					className="mt-auto"
-				/>
+				<NavMain items={navItems} />
 			</SidebarContent>
 			<SidebarFooter>
-				<NavUser user={session?.user} />
+				{session?.user && <NavUser user={session.user} />}
 			</SidebarFooter>
 		</Sidebar>
 	);

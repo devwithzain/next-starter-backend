@@ -3,8 +3,6 @@ import { desc } from "drizzle-orm";
 import BlogsTable from "./_components/blogs-table";
 import { blogsTable, BlogRecord } from "@/drizzle/schema";
 
-export const dynamic = "force-dynamic";
-
 export default async function BlogsDashboardPage() {
 	let blogs: BlogRecord[] = [];
 

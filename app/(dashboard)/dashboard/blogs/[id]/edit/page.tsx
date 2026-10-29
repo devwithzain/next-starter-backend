@@ -4,8 +4,6 @@ import { notFound } from "next/navigation";
 import { blogsTable } from "@/drizzle/schema";
 import BlogForm from "../../_components/blog-form";
 
-export const dynamic = "force-dynamic";
-
 export const metadata = {
 	title: "Edit Blog | Dashboard",
 	description: "Edit article content and publishing settings",

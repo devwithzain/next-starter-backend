@@ -147,16 +147,16 @@ export const defaultDictionaries: Readonly<
   Record<string, AutocompleteDictionaryLoader>
 > = {
   ar: () =>
-    import("@/components/editor/dictionaries/arabic").then(({ ARABIC_WORDS }) =>
+    import("@/components/arabic").then(({ ARABIC_WORDS }) =>
       createWordlistDictionary(ARABIC_WORDS),
     ),
   en: () =>
-    import("@/components/editor/dictionaries/english").then(
+    import("@/components/english").then(
       ({ ENGLISH_WORDS }) =>
         createWordlistDictionary(ENGLISH_WORDS, { minPrefixLength: 4 }),
     ),
   he: () =>
-    import("@/components/editor/dictionaries/hebrew").then(({ HEBREW_WORDS }) =>
+    import("@/components/hebrew").then(({ HEBREW_WORDS }) =>
       createWordlistDictionary(HEBREW_WORDS),
     ),
 };
@@ -252,7 +252,7 @@ function formatSuggestionText(
   rootElem: HTMLElement | null,
 ): string {
   const userAgentData = (
-    window.navigator as Navigator & { userAgentData?: { mobile: boolean } }
+    window.navigator as Navigator & { userAgentData?: { mobile: boolean; }; }
   ).userAgentData;
   const isMobile =
     userAgentData !== undefined
@@ -581,9 +581,9 @@ export const AutocompleteExtension = defineExtension({
                     activeTextNodeKey,
                     lastSuggestion
                       ? formatSuggestionText(
-                          lastSuggestion,
-                          editor.getRootElement(),
-                        )
+                        lastSuggestion,
+                        editor.getRootElement(),
+                      )
                       : null,
                   );
                 }
